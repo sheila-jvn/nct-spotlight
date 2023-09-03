@@ -8,7 +8,6 @@ export default function DraggablePage() {
 
   return (
     <main className='w-screen h-screen bg-red-500' {...parentProps}>
-      <h1 style={{ transform }}>Hello</h1>
       <p>
         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repellendus
         vel id ducimus obcaecati nobis ullam voluptatibus et, veritatis illum
@@ -16,14 +15,14 @@ export default function DraggablePage() {
         facilis velit laborum!
       </p>
 
-      <p>Delta: {transform}</p>
+      <p>Delta: {JSON.stringify(transform)}</p>
 
       <Image
         style={{
           position: 'fixed',
           top: 200,
           left: 200,
-          transform
+          transform: `translate(${transform.x}px, ${transform.y}px)`
         }}
         width={200}
         height={200}

@@ -1,4 +1,5 @@
 import { MouseEventHandler, createContext, useContext, useState } from 'react'
+import { usePrevious } from 'react-use'
 
 interface Position {
   x: number
@@ -13,7 +14,7 @@ interface DeltaContextValue {
   }
   deltaPosition: Position
   isDragging: boolean
-  transform: string
+  transform: Position
 }
 
 export const ORIGIN: Position = { x: 0, y: 0 }
@@ -26,7 +27,7 @@ export const DeltaContext = createContext<DeltaContextValue>({
   },
   deltaPosition: ORIGIN,
   isDragging: false,
-  transform: ''
+  transform: ORIGIN
 })
 
 interface DeltaProviderProps {
@@ -37,9 +38,10 @@ export const DeltaProvider = ({ children }: DeltaProviderProps) => {
   const [isDragging, setIsDragging] = useState(false)
   const [initialPosition, setInitialPosition] = useState(ORIGIN)
   const [deltaPosition, setDeltaPosition] = useState(ORIGIN)
-  const [totalDelta, setTotalDelta] = useState(ORIGIN)
+  const prevDelta = usePrevious(deltaPosition)
+  const [transform, setTransform] = useState(ORIGIN)
 
-  const transform = `translate(${deltaPosition.x}px, ${deltaPosition.y}px)`
+  console.table({ initialPosition, prevDelta, deltaPosition, transform })
 
   const onMouseDown: MouseEventHandler<HTMLDivElement> = (event) => {
     setIsDragging(true)
@@ -56,11 +58,18 @@ export const DeltaProvider = ({ children }: DeltaProviderProps) => {
         x: event.clientX - initialPosition.x,
         y: event.clientY - initialPosition.y
       })
+
+      setTransform((prev) => ({
+        x: prev.x + (deltaPosition.x - (prevDelta?.x ?? 0)),
+        y: prev.y + (deltaPosition.y - (prevDelta?.y ?? 0))
+      }))
     }
   }
 
   const onMouseUp: MouseEventHandler<HTMLDivElement> = (event) => {
     setIsDragging(false)
+    // Reset the delta position, also reset the previous delta
+    setDeltaPosition(ORIGIN)
   }
 
   const parentProps = {
