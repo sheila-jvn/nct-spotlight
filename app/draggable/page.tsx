@@ -7,7 +7,10 @@ export default function DraggablePage() {
   const { parentProps, transform } = useDragContext()
 
   return (
-    <main className='w-screen h-screen bg-red-500' {...parentProps}>
+    <main
+      className='w-screen h-screen bg-aespa-babypink bg-gradient-aespa'
+      {...parentProps}
+    >
       <p>
         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repellendus
         vel id ducimus obcaecati nobis ullam voluptatibus et, veritatis illum
@@ -18,6 +21,7 @@ export default function DraggablePage() {
       <p>Delta: {JSON.stringify(transform)}</p>
 
       <Image
+        className='shadow-xl'
         style={{
           position: 'fixed',
           top: 200,
