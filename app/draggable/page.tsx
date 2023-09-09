@@ -21,11 +21,26 @@ export default function DraggablePage() {
       <p>Delta: {JSON.stringify(transform)}</p>
 
       <Image
-        className='shadow-xl'
+        className='shadow-xl origin-center'
         style={{
           position: 'fixed',
-          top: 200,
-          left: 200,
+          top: 0,
+          left: 0,
+          transform: `translateX(200px) translate(${transform.x}px, ${transform.y}px)`
+        }}
+        width={200}
+        height={200}
+        src='https://static.wikia.nocookie.net/aespa/images/8/81/Life%27s_Too_Short_Song_Cover.jpeg/revision/latest?cb=20220620150103'
+        alt='Vercel Logo'
+        draggable={false}
+      />
+
+      <Image
+        className='shadow-xl origin-center'
+        style={{
+          position: 'fixed',
+          top: 400,
+          left: 600,
           transform: `translate(${transform.x}px, ${transform.y}px)`
         }}
         width={200}
