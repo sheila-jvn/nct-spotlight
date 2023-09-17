@@ -1,7 +1,7 @@
+import { getHeight, getWidth } from '@/utils/screen'
 import { MouseEventHandler, createContext, useContext, useState } from 'react'
 import { usePrevious } from 'react-use'
 import { loopBack } from './clamp'
-import { HEIGHT, WIDTH } from '@/utils/constants'
 
 interface Position {
   x: number
@@ -66,15 +66,15 @@ export const DeltaProvider = ({ children }: DeltaProviderProps) => {
         return {
           x: loopBack({
             min: 0,
-            max: WIDTH,
+            max: getWidth(),
             value: computedX,
-            treshold: (5 / 100) * WIDTH
+            treshold: (5 / 100) * getWidth()
           }),
           y: loopBack({
             min: 0,
-            max: HEIGHT,
+            max: getHeight(),
             value: computedY,
-            treshold: (5 / 100) * HEIGHT
+            treshold: (5 / 100) * getHeight()
           })
         }
       })

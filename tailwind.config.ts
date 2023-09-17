@@ -25,7 +25,7 @@ const config: Config = {
           babypink: '#EEAECA'
         }
       }
-    },
+    }
   },
   plugins: []
 }
