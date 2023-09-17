@@ -1,35 +1,7 @@
 import { MouseEventHandler, createContext, useContext, useState } from 'react'
 import { usePrevious } from 'react-use'
-import { clamp } from './clamp'
-
-interface ClampOptions {
-  value: number
-  lowerLimit: number
-  upperLimit: number
-  width: number
-}
-
-function loopBack({
-  lowerLimit,
-  upperLimit,
-  value,
-  width
-}: ClampOptions): number {
-  const halfWidth = width / 2
-  const lowerBound = lowerLimit - halfWidth
-  const upperBound = upperLimit + halfWidth
-
-  if (value < lowerBound) {
-    return upperBound
-  } else if (value > upperBound) {
-    return lowerBound
-  } else {
-    return clamp({ min: lowerBound, max: upperBound, value })
-  }
-}
-
-const WIDTH = 800
-const HEIGHT = 500
+import { loopBack } from './clamp'
+import { HEIGHT, WIDTH } from '@/utils/constants'
 
 interface Position {
   x: number
@@ -81,8 +53,6 @@ export const DeltaProvider = ({ children }: DeltaProviderProps) => {
   }
 
   const onMouseMove: MouseEventHandler<HTMLDivElement> = (event) => {
-    const initialBoxPos: Position = { x: 200, y: 200 }
-
     if (isDragging) {
       setDeltaPosition({
         x: event.clientX - initialPosition.x,
@@ -91,16 +61,21 @@ export const DeltaProvider = ({ children }: DeltaProviderProps) => {
 
       setTransform((prev) => {
         const computedX = prev.x + (deltaPosition.x - (prevDelta?.x ?? 0))
-        console.log({ computedX })
+        const computedY = prev.y + (deltaPosition.y - (prevDelta?.y ?? 0))
 
         return {
           x: loopBack({
-            lowerLimit: 0,
-            upperLimit: WIDTH,
+            min: 0,
+            max: WIDTH,
             value: computedX,
-            width: 200
+            treshold: (5 / 100) * WIDTH
           }),
-          y: prev.y + (deltaPosition.y - (prevDelta?.y ?? 0))
+          y: loopBack({
+            min: 0,
+            max: HEIGHT,
+            value: computedY,
+            treshold: (5 / 100) * HEIGHT
+          })
         }
       })
     }

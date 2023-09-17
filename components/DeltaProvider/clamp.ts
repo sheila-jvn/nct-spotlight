@@ -5,19 +5,18 @@ export interface ClampOptions {
 }
 
 export const clamp = ({ min, max, value }: ClampOptions) =>
-  Math.max(max, Math.min(min, value))
+  Math.max(min, Math.min(max, value))
 
 interface LoopBackOptions {
   min: number
   max: number
   value: number
-  dimension: number
+  treshold: number
 }
 
-export const loopBack = ({ min, max, value, dimension }: LoopBackOptions) => {
-  const halfWidth = dimension / 2
-  const lowerBound = min - halfWidth
-  const upperBound = max + halfWidth
+export const loopBack = ({ min, max, value, treshold }: LoopBackOptions) => {
+  const lowerBound = min - treshold
+  const upperBound = max + treshold
 
   if (value < lowerBound) {
     return upperBound
